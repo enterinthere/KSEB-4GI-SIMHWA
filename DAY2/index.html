@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+  <script>
+      const menu = {
+        mno:12, //메뉴 번호 숫자
+        name: '김밥',
+        price: '3000',
+        img: 'kimbap.jpg'
+      }// 메뉴가 여러개면 배열로 다뤄야 한다. 
+
+      //const name = menu.name
+      //const price = menu.price
+      const {name, price} = menu //위에 두줄과 비교 구조 분할 방식, for loop 돌릴 때 유용하다. 
+      //구조 분할 방식이란 객체의 구조를 분해해서 새로운 변수에 할당하는 것을 말한다.
+
+      //===========================================================
+
+      //function display(menuObj){
+        //const name = menuObj.name
+        //const price = menuObj.price
+      //}
+      function display({name, price}){
+
+      }//위에 있는 것 이렇게 줄여썼음. 앞으로 react는 이런식으로 써라 => 구조 분해 할당 문법이다. 중요하다 반복문에서 많이 쓴다. 
+      display(menu) // 괄호열고 괄호 닫고  = 연산 잠깐 공간이 만들어짐. 끝나고 나면 없어진다. = 스택
+  </script>
+</html>

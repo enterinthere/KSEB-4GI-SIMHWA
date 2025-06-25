@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>중국집 키오스크</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-4">
+
+  <!-- 헤더 -->
+  <header class="flex justify-between items-center bg-white p-4 rounded shadow mb-4">
+    <h1 class="text-2xl font-bold">🍜 중국집 키오스크</h1>
+    <select class="border p-2 rounded">
+      <option>한국어</option>
+      <option>English</option>
+      <option>中文</option>
+    </select>
+  </header>
+
+  <!-- 카테고리 -->
+  <nav class="flex gap-4 mb-4">
+    <button id="btn-noodles" onclick="filterMenu('noodles')" class="px-4 py-2 rounded bg-red-500 text-white">면류</button>
+    <button id="btn-rice" onclick="filterMenu('rice')" class="px-4 py-2 rounded bg-gray-200 text-black">밥류</button>
+    <button id="btn-drinks" onclick="filterMenu('drinks')" class="px-4 py-2 rounded bg-gray-200 text-black">주류</button>
+    <button id="btn-premium" onclick="filterMenu('premium')" class="px-4 py-2 rounded bg-gray-200 text-black">고급요리류</button>
+  </nav>
+
+  <!-- 메뉴 -->
+  <section id="menu" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-28"></section>
+
+  <!-- 하단 주문창 -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white p-4 shadow flex justify-between items-center">
+    <div>
+      <div class="text-sm">주문수량: <span id="count">0</span></div>
+      <div class="text-sm">주문금액: ₩<span id="total">0</span></div>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="resetOrder()" class="bg-gray-300 px-4 py-2 rounded">전체 취소</button>
+      <button onclick="placeOrder()" class="bg-red-600 text-white px-6 py-2 rounded">주문하기</button>
+    </div>
+  </footer>
+
+  <script>
+    const menuItems = [
+      { name: "짜장면", price: 7000, category: "noodles",image: "images/짜장면.jpg" },
+      { name: "짬뽕", price: 8000, category: "noodles", image: "images/짬뽕.jpg" },
+      { name: "울면", price: 8500, category: "noodles",image: "images/울면.jpg" },
+      { name: "볶음밥", price: 7500, category: "rice",image: "images/볶음밥.jpg" },
+      { name: "잡채밥", price: 8000, category: "rice",image: "images/잡채밥.jpg" },
+      { name: "마파두부밥", price: 8500, category: "rice",image: "images/마파두부밥.jpg" },
+      { name: "소주", price: 4000, category: "drinks",image: "images/소주.jpg" },
+      { name: "맥주", price: 5000, category: "drinks",image: "images/맥주.jpg" },
+      { name: "고량주", price: 12000, category: "drinks",image: "images/고량주.png" },
+      { name: "팔보채", price: 18000, category: "premium",image: "images/팔보채.jpg" },
+      { name: "깐풍기", price: 17000, category: "premium",image: "images/깐풍기.jpg"},
+      { name: "유산슬", price: 19000, category: "premium",image: "images/유산슬.jpg"}
+    ];
+
+    const cart = {};
+    let currentCategory = "noodles";
+
+    function createMenu(category) {
+      const container = document.getElementById("menu");
+      container.innerHTML = "";
+
+      menuItems.forEach((item, index) => {
+        if (item.category !== category) return;
+        const qty = cart[index] || 0;
+
+        const card = document.createElement("div");
+        card.className = "rounded shadow p-2 bg-white transition";
+        if (qty > 0) card.classList.add("bg-yellow-100");
+
+        card.innerHTML = `
+  <img src="${item.image}" class="w-full h-48 object-cover rounded mb-2" alt="${item.name}">
+  <div class="font-bold text-lg">${item.name}</div>
+  <div class="text-gray-600">₩${item.price}</div>
+  <input type="number" id="qty-${index}" min="0" value="${qty}"
+         class="w-full border rounded my-2 p-1 text-center" />
+  <button onclick="addToCart(${item.price}, ${index})"
+          class="w-full bg-red-500 text-white py-1 rounded">
+    담기
+  </button>
+`;
+
+        container.appendChild(card);
+      });
+    }
+
+    function addToCart(price, index) {
+      const qty = parseInt(document.getElementById(`qty-${index}`).value) || 0;
+      if (qty === 0) delete cart[index];
+      else cart[index] = qty;
+      updateSummary();
+      filterMenu(currentCategory);
+    }
+
+    function updateSummary() {
+      let totalQty = 0;
+      let totalPrice = 0;
+      for (const idx in cart) {
+        const item = menuItems[idx];
+        totalQty += cart[idx];
+        totalPrice += cart[idx] * item.price;
+      }
+      document.getElementById("count").innerText = totalQty;
+      document.getElementById("total").innerText = totalPrice.toLocaleString();
+    }
+
+    function resetOrder() {
+      for (const key in cart) delete cart[key];
+      updateSummary();
+      filterMenu(currentCategory);
+    }
+
+    function placeOrder() {
+      if (Object.keys(cart).length === 0) {
+        alert("선택된 메뉴가 없습니다!");
+        return;
+      }
+      alert("주문이 완료되었습니다. 감사합니다!");
+      resetOrder();
+    }
+
+    function filterMenu(category) {
+      currentCategory = category;
+
+      ["noodles", "rice", "drinks", "premium"].forEach(cat => {
+        const btn = document.getElementById(`btn-${cat}`);
+        if (cat === category) {
+          btn.classList.add("bg-red-500", "text-white");
+          btn.classList.remove("bg-gray-200", "text-black");
+        } else {
+          btn.classList.add("bg-gray-200", "text-black");
+          btn.classList.remove("bg-red-500", "text-white");
+        }
+      });
+
+      createMenu(category);
+    }
+
+    window.onload = () => filterMenu("noodles");
+  </script>
+
+</body>
+</html>
