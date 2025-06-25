@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Display</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        #display {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="display"></div>
+
+    <div class="button-group">
+        <button id="decrease">-</button>
+        <button id="increase">+</button>
+    </div>
+
+    <script>
+        const target = { num: 10 }; //데이터이다. 
+        //필요한거 버튼 2개 숫자 보여주는거 바뀔 이유가 없으니 const로 
+        const displayObj = document.querySelector("#display");
+        const btnIncrease = document.querySelector("#increase");
+        const btnDecrease = document.querySelector("#decrease");
+
+        function updateDisplay() {//function을 실행하면 화면에 있는 innerHTML을 바꾸겠다.
+            displayObj.innerHTML = `NUM ${target.num}`;
+        }
+
+        btnIncrease.addEventListener("click", () => {//버튼을 클릭하면 어떤일을 할 것인가에 대한 내용이다. 
+            target.num++;//=> : 화살표 함수이다. 바꾸면 자바스크립트 상에 있는 값은 바뀌었지만 화면에서는 바뀌지 않음
+            updateDisplay();//업데이트를 했기 때문에 바뀌는게 가능하다. 이 코드가 없으면 바뀌지 않는다. 매번 할 때마다 updatediplay? 짜증나는데...
+            //따라서 라이브러리와 프레임워크를 만들기 시작한다. 데이터 바꿔주면 별도의 처리 없이 바꿀 수 있다. 
+        });
+
+        btnDecrease.addEventListener("click", () => {
+            target.num--;
+            updateDisplay();
+        });
+
+        // 초기 표시
+        updateDisplay();
+    </script>
+</body>
+</html>

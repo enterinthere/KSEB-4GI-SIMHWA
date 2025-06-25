@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Grid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <h1 class="text-2xl font-bold mb-6 text-center">상품 목록</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+    
+    <!-- 반복 상품 카드 -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300x200" alt="상품 이미지" class="w-full h-48 object-cover rounded-md mb-4">
+      <div class="text-lg font-semibold mb-2">₩19,900</div>
+      <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md font-semibold">장바구니에 담기</button>
+    </div>
+
+    <!-- 같은 카드 5개 복사 -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300x200" alt="상품 이미지" class="w-full h-48 object-cover rounded-md mb-4">
+      <div class="text-lg font-semibold mb-2">₩25,000</div>
+      <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md font-semibold">장바구니에 담기</button>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300x200" alt="상품 이미지" class="w-full h-48 object-cover rounded-md mb-4">
+      <div class="text-lg font-semibold mb-2">₩13,000</div>
+      <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md font-semibold">장바구니에 담기</button>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300x200" alt="상품 이미지" class="w-full h-48 object-cover rounded-md mb-4">
+      <div class="text-lg font-semibold mb-2">₩9,900</div>
+      <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md font-semibold">장바구니에 담기</button>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300x200" alt="상품 이미지" class="w-full h-48 object-cover rounded-md mb-4">
+      <div class="text-lg font-semibold mb-2">₩42,000</div>
+      <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md font-semibold">장바구니에 담기</button>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow">
+      <img src="https://via.placeholder.com/300x200" alt="상품 이미지" class="w-full h-48 object-cover rounded-md mb-4">
+      <div class="text-lg font-semibold mb-2">₩29,800</div>
+      <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md font-semibold">장바구니에 담기</button>
+    </div>
+
+  </div>
+
+</body>
+<script>
+    /*console.log(a)
+    var a  = 10;// undifine 이라 뜬다. ...1번
+
+    /* var a;
+    console.log(a)
+    a  = 10; hoisting이라고 한다. 개발자들이 알아보기 힘들어함 따라서 
+    let과 const를 이용하자. let으로 바꾸면 눈으로 보는 범위 = 실제 차지하는 범위...2번*/
+
+    /*const obj = {name: 'Hello',age: 10}
+    console.log(obj)
+    obj.name="8888"// 변경하는거 가능한가? 가능하다 그니까 obj를 가르키는 메모리는 못바꾸지만
+    그 안의 값은 바꿀 수 있다....3번*/
+
+    /*function doA(){//함수도 결국에는 변수이다. 함수 특별취급 괄호 사용하는 것 
+        console.log('hello')//doA는 리모콘이다. 
+    }
+    const a = doA //doA가 변수처럼 사용되고 있다. 변수가 오른쪽에 있으면 로딩을 한다.  
+    const b =a//a에서 로딩한 값을 b에 카피한것이다. 로드->카피->스토어 
+    //결과적으로 a, b, doA는 같은 애를 가르킨다. hello를 가르킨다. 따라서 함수= 변수이다 
+    //this => 얘를 가르키고 있는 메모리를 가르키는 변수....4번*/
+</script>
+</html>
