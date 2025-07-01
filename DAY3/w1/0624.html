@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>메뉴와 장바구니</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .menu {
+      width: 70%;
+      padding: 20px;
+      background-color: #fff8f0;
+    }
+
+    .menu h2 {
+      color: #d35400;
+    }
+
+    .menuList {
+      list-style: none;
+      padding: 0;
+    }
+
+    .menuList li {
+      background-color: #ffe0cc;
+      border: 1px solid #ffb380;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    .menuList li:hover {
+      background-color: #ffcc99;
+    }
+
+    .cart {
+      width: 30%;
+      padding: 20px;
+      background-color: #e9ecef;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart h2 {
+      color: #2c3e50;
+    }
+
+    .cart-summary {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pay-button {
+      padding: 10px 16px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .pay-button:hover {
+      background-color: #1e8449;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="menu">
+      <h2>메뉴</h2>
+      <p>여기에 음식 메뉴 목록이 들어갑니다.</p>
+      <ul class="menuList"></ul>
+    </div>
+    <div class="cart">
+      <h2>장바구니</h2>
+      <p>선택한 항목이 여기에 표시됩니다.</p>
+      <ul class="cartItemList"></ul>
+
+      <!-- ✅ 총액 및 결제 버튼 영역 -->
+      <div class="cart-summary">
+        <div class="total-price">총액: 0원</div>
+        <button class="pay-button">결제하기</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { addCart, ChangeCartQty } from '/src/cart.js';
+
+    const menus = [
+      { mno: 1, name: '짜장면', price: 8000, image: "/짜장면.jpg" },
+      { mno: 2, name: '짬뽕', price: 9000, image: "/짬뽕.jpg" },
+      { mno: 3, name: '볶음밥', price: 9800, image: "/볶음밥.jpg" },
+      { mno: 4, name: '울면', price: 8500, image: "/울면.jpg" },
+      { mno: 5, name: '덴푸라', price: 18000, image: "/덴푸라.jpeg" }
+    ];
+
+    const menuList = document.querySelector('.menuList');
+    const cartItemList = document.querySelector('.cartItemList');
+    const totalPriceEl = document.querySelector('.total-price');
+    const payButton = document.querySelector('.pay-button');
+
+    cartItemList.addEventListener("click", (e) => {
+      const target = e.target;
+      const mno = target.getAttribute("data-mno");
+      const oper = target.getAttribute("data-oper");
+      if (!mno || !oper) return;
+      const result = ChangeCartQty(mno, oper);
+      displayCartItems(result);
+    }, false);
+
+    const fragment = document.createDocumentFragment();
+    menus.forEach(menu => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="${menu.image}" alt="${menu.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;" />
+          <div>
+            <div>${menu.name}</div>
+            <div>${menu.price.toLocaleString()}원</div>
+          </div>
+        </div>
+      `;
+      li.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const currentCart = addCart(menu);
+        displayCartItems(currentCart);
+      }, false);
+      fragment.appendChild(li);
+    });
+    menuList.appendChild(fragment);
+
+    function displayCartItems(cartItems) {
+      let str = "";
+      for (let { mno, name, price, qty, image } of cartItems) {
+        str += `<li>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="${image}" alt="${name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;" />
+            <div>
+              <div>${mno} -- ${name} - ${price.toLocaleString()}원 - ${qty}개 = ${(qty * price).toLocaleString()}원</div>
+              <div>
+                <button data-mno="${mno}" data-oper="plus">+</button>
+                <button data-mno="${mno}" data-oper="minus">-</button>
+              </div>
+            </div>
+          </div>
+        </li>`;
+      }
+      cartItemList.innerHTML = str;
+
+      // ✅ reduce로 총액 계산
+      const total = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+      totalPriceEl.textContent = `총액: ${total.toLocaleString()}원`;
+    }
+
+    // ✅ 결제 버튼 이벤트
+    payButton.addEventListener("click", () => {
+      const priceText = totalPriceEl.textContent;
+      if (priceText.includes("0원")) {
+        alert("장바구니가 비어 있습니다.");
+      } else {
+        alert("결제가 완료되었습니다!");
+      }
+    });
+  </script>
+</body>
+</html>

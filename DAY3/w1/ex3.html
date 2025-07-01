@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Import Cart Example</title>
+</head>
+<body>
+  <h1>장바구니 테스트</h1>
+  <button id="addBtn">Add</button>
+  <button id="removeBtn">Remove</button>
+
+  <!-- 모듈 스크립트 불러오기 -->
+  <script type="module"> // 이걸 써야지만 import를 쓸 수 있다. 
+    import { addCart, removeCart } from '/src/cart.js';
+
+    document.getElementById('addBtn').addEventListener('click', () => {
+      addCart();//클릭했을 때 함수를 호출한다. 
+    });
+
+    document.getElementById('removeBtn').addEventListener('click', () => {
+      removeCart();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Tailwind Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 md:bg-white transition-colors duration-300">
+
+  <header class="flex items-center justify-between p-4 bg-white shadow-md">
+    <h1 class="text-xl font-bold">My Website</h1>
+
+    <!-- 데스크탑 메뉴 -->
+    <ul class="hidden md:flex space-x-6 font-semibold text-black">
+      <li><a href="#">메인</a></li>
+      <li><a href="#">상품</a></li>
+      <li><a href="#">로그인</a></li>
+    </ul>
+
+    <!-- 모바일 햄버거 버튼: 항상 오른쪽 끝 -->
+    <button id="menu-toggle" class="md:hidden flex flex-col gap-1">
+      <span class="block w-6 h-0.5 bg-black"></span>
+      <span class="block w-6 h-0.5 bg-black"></span>
+      <span class="block w-6 h-0.5 bg-black"></span>
+    </button>
+  </header>
+
+  <!-- 모바일 메뉴 -->
+  <ul id="mobile-menu" class="md:hidden hidden flex-col space-y-4 p-4 bg-white font-semibold text-black">
+    <li><a href="#">메인</a></li>
+    <li><a href="#">상품</a></li>
+    <li><a href="#">로그인</a></li>
+  </ul>
+
+  <script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    toggleBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+
+</body>
+</html>
